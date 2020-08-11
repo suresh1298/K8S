@@ -1,0 +1,33 @@
+       app: httpd
+    spec:
+      containers:
+        - name: httpd
+          image: nginx
+          resources:
+            requests:
+              memory: "5Mi"
+              cpu: "100m"
+            limits:
+              memory: "1500Mi"
+              cpu: "500m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+            
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: landing
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: httpd
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: 70
