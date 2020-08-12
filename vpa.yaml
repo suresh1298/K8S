@@ -1,0 +1,21 @@
+ya hear if we want to use vpa just we need to falow some recomandations 
+vpa-admission-controller-85f99699b7-fppd2
+vpa-recommender-6954ff44b4-b98v7
+vpa-updater-8497d7cb76-cdbkv
+----
+git clone https://github.com/kubernetes/autoscaler.git
+
+autoscaler/vertical-pod-autoscaler/hack
+from this we ne need to set up vpa-up.sh
+
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-httpd
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: vpa-rec
+  updatePolicy:
+    updateMode: "Off"
