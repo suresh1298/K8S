@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: ec2-3-85-214-215.compute-1.amazonaws.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: test
+          servicePort: 80
+          # - path: /b
+          # backend:
+          #serviceName: test
+          #servicePort: 80
+  - host: ec2-100-26-182-223.compute-1.amazonaws.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: https-service
+          servicePort: 80
+          # - path: /b
+          #  backend:
+          #serviceName: test
+          #servicePort: 80
