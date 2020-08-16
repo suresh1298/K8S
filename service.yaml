@@ -1,3 +1,5 @@
+NODEPORT
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -9,4 +11,19 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      nodePort: 80        
+      nodePort: 80
+  ---
+TARGETPORT
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: test
+spec:
+  selector:
+    app: httpd
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
