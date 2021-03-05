@@ -27,3 +27,16 @@ spec:
       port: 80
       targetPort: 8080
 
+https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition
+
+It helps me to think of things from the perspective of the service.
+
+nodePort: The port on the node where external traffic will come in on
+port: The port of this service
+targetPort: The target port on the pod(s) to forward traffic to
+Traffic comes in on nodePort, forwards to port on the service which then routes to targetPort on the pod(s).
+
+It's worth emphasizing more that nodePort is for external traffic. Other pods in the cluster that may need to access the service will just use port, not nodePort as it's internal only access to the service.
+
+Also worth noting that if targetPort is not set, it will default to the same value as port. E.g. 80:80 for service port 80 targeting container port 80.
+
