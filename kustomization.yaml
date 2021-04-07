@@ -1,0 +1,61 @@
+resources:
+  - deployment.yml
+
+----
+ environments
+    new
+    qa
+----
+new
+    env.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cm-deployment
+  namespace: microservices
+spec:
+  template:
+    spec:
+      containers:
+        - name: cm-service-container
+          env:
+            - name: rabbitmq.addresses
+              value: 192.168.9.24:5672
+            - name: spring.cloud.config.label
+              value: new
+-----
+      nodeSelectors.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  cm-deployment
+  namespace: microservices
+spec:
+  template:
+    spec:
+      nodeSelector:
+        service: worker1
+----
+   replica.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cm-deployment
+  namespace: microservices
+spec:
+  replicas: 1
+  
+  
+  -----
+  kustomization.yaml
+bases:
+  - ../../kubernetes
+patches:
+  - replica.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: new-microservices
+patchesStrategicMerge:
+  - env.yaml
+  - nodeSelectors.yaml
+
