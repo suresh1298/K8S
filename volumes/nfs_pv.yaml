@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: microservices-pv
+  namespace: microservices
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: nfsstorage
+  mountOptions:
+    - nfsvers=4.1
+  nfs:
+    path: /ELK/k0s_microservices
+    server: 192.168.9.42
